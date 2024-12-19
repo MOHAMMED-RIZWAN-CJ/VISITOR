@@ -14,6 +14,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText e1,e2,e3,e4;
@@ -40,7 +48,43 @@ public class MainActivity extends AppCompatActivity {
             getLname=e2.getText().toString();
             getPur=e3.getText().toString();
             getWhom=e4.getText().toString();
-            Toast.makeText(getApplicationContext(),getFname+" "+getLname+" "+getPur+" "+getWhom+" ",Toast.LENGTH_LONG).show();
+           if(getFname.isEmpty()||getLname.isEmpty()||getPur.isEmpty()||getWhom.isEmpty())
+           {
+               Toast.makeText(getApplicationContext(),"ALL MUST FILL",Toast.LENGTH_LONG).show();
+           }
+           else {
+               callApi();
+           }
+
+        }
+
+        private void callApi() {
+            String apiUrl="https://log-app-demo-api.onrender.com/addvisitor";
+            JSONObject data=new JSONObject();
+            try {
+                data.put("firstname",getFname);
+                data.put("lastname",getLname);
+                data.put("purpose",getPur);
+                data.put("whomToMeet",getWhom);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+            JsonObjectRequest request=new JsonObjectRequest(
+                    Request.Method.POST,
+                    apiUrl,
+                    data,
+                    response -> Toast.makeText(getApplicationContext(),"SUCESSFULLY ADDED",Toast.LENGTH_LONG).show(),
+                    error -> Toast.makeText(getApplicationContext(),"ERROR OCCURED",Toast.LENGTH_LONG).show()
+
+
+            );
+
+            RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
+            queue.add(request);
+
+
+
 
         }
 
