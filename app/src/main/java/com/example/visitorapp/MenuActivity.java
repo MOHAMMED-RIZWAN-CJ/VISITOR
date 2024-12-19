@@ -32,5 +32,13 @@ Button b1,b2;
             }
         });
 
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent obj=new Intent((getApplicationContext()), ViewAllActivity.class);
+                startActivity(obj);
+            }
+        });
+
     }
 }
